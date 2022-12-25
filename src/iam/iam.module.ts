@@ -10,7 +10,8 @@ import { AuthenticationController } from './authentication/authentication.contro
 import { AuthenticationService } from './authentication/authentication.service';
 import { User } from 'src/users/entities/user.entity';
 import jwtConfig from './config/jwt.config';
-import { AccessTokenGuard } from './authentication/guards/access-token/access-token.guard';
+import { AuthenticationGuard } from './authentication/guards/authentication.guard';
+import { AccessTokenGuard } from './authentication/guards/access-token.guard';
 
 @Module({
   imports: [
@@ -25,8 +26,9 @@ import { AccessTokenGuard } from './authentication/guards/access-token/access-to
     },
     {
       provide: APP_GUARD,
-      useClass: AccessTokenGuard,
+      useClass: AuthenticationGuard,
     },
+    AccessTokenGuard,
     AuthenticationService,
   ],
   controllers: [AuthenticationController],
