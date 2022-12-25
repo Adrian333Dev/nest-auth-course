@@ -14,6 +14,12 @@ import { AuthenticationGuard } from './authentication/guards/authentication.guar
 import { AccessTokenGuard } from './authentication/guards/access-token.guard';
 import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage';
 import { PermissionsGuard } from './authorization/guards/permissions.guard';
+import { PolicyHandlerStorage } from './authorization/policies/policy-handlers.storage';
+import {
+  FrameworkContributorPolicy,
+  FrameworkContributorPolicyHandler,
+} from './authorization/policies/framework-contributor.policy';
+import { PoliciesGuard } from './authorization/guards/policies.guard';
 // import { RolesGuard } from './authorization/guards/roles.guard';
 
 @Module({
@@ -31,17 +37,17 @@ import { PermissionsGuard } from './authorization/guards/permissions.guard';
       provide: APP_GUARD,
       useClass: AuthenticationGuard,
     },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard,
-    // },
     {
       provide: APP_GUARD,
-      useClass: PermissionsGuard,
+      // useClass: PermissionsGuard,
+      //   useClass: RolesGuard,
+      useClass: PoliciesGuard,
     },
     AccessTokenGuard,
     AuthenticationService,
     RefreshTokenIdsStorage,
+    PolicyHandlerStorage,
+    FrameworkContributorPolicyHandler,
   ],
   controllers: [AuthenticationController],
 })
