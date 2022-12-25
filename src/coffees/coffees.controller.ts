@@ -17,9 +17,12 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Permission } from 'src/iam/authorization/permission.type';
 import { FrameworkContributorPolicy } from 'src/iam/authorization/policies/framework-contributor.policy';
 import { Policies } from 'src/iam/authorization/decorators/policy-handler.interface';
+import { Auth } from 'src/iam/authentication/decorators/auth.decorator';
+import { AuthType } from 'src/iam/authentication/enum/auth-type.enum';
 // import { Role } from './../users/enums/role.enum';
 // import { Roles } from 'src/iam/authorization/decorators/roles.decorator';
 
+@Auth(AuthType.Bearer, AuthType.ApiKey)
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
