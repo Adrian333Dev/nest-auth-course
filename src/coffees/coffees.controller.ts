@@ -7,8 +7,10 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ActiveUserData } from 'src/iam/interfaces/active-user-data.interface';
 
+import { Role } from './../users/enums/role.enum';
+import { Roles } from 'src/iam/authorization/decorators/roles.decorator';
+import { ActiveUserData } from 'src/iam/interfaces/active-user-data.interface';
 import { ActiveUser } from './../iam/decorators/active-user.decorator';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
@@ -18,6 +20,7 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
+  @Roles(Role.Admin)
   @Post()
   create(@Body() createCoffeeDto: CreateCoffeeDto) {
     return this.coffeesService.create(createCoffeeDto);
@@ -35,11 +38,13 @@ export class CoffeesController {
     return this.coffeesService.findOne(+id);
   }
 
+  @Roles(Role.Admin)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
     return this.coffeesService.update(+id, updateCoffeeDto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.coffeesService.remove(+id);
